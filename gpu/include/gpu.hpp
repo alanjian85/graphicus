@@ -1,3 +1,5 @@
 #pragma once
 
-void gpu();
+#include <cstdint>
+
+void gpu(uint32_t *mem);
