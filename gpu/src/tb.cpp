@@ -5,8 +5,8 @@
 
 #include <gpu.hpp>
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
+const int SCRN_WIDTH = 800;
+const int SCRN_HEIGHT = 600;
 
 int main() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -14,9 +14,9 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    SDL_Window *window = SDL_CreateWindow("Graphicus", SDL_WINDOWPOS_UNDEFINED,
-                                          SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
-                                          SCREEN_HEIGHT, 0);
+    SDL_Window *window =
+        SDL_CreateWindow("Graphicus", SDL_WINDOWPOS_UNDEFINED,
+                         SDL_WINDOWPOS_UNDEFINED, SCRN_WIDTH, SCRN_HEIGHT, 0);
     if (window == nullptr) {
         fprintf(stderr, "Failed to create the window\n");
         return EXIT_FAILURE;
@@ -28,16 +28,16 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    SDL_Texture *fb_texture = SDL_CreateTexture(
-        renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING,
-        SCREEN_WIDTH, SCREEN_HEIGHT);
+    SDL_Texture *fb_texture =
+        SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888,
+                          SDL_TEXTUREACCESS_STREAMING, SCRN_WIDTH, SCRN_HEIGHT);
     if (fb_texture == nullptr) {
         fprintf(stderr, "Failed to create the framebuffer texture\n");
         return EXIT_FAILURE;
     }
 
     bool quit = false;
-    uint32_t mem[SCREEN_WIDTH * SCREEN_HEIGHT];
+    uint32_t mem[SCRN_WIDTH * SCRN_HEIGHT];
     while (!quit) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -48,7 +48,7 @@ int main() {
             }
         }
 
-        gpu(mem);
+        gpu(mem, SCRN_WIDTH | SCRN_HEIGHT << 16);
 
         SDL_RenderClear(renderer);
 
