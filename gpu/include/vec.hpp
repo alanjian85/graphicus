@@ -10,7 +10,9 @@ template <typename T, int N> struct basic_vec {
     template <typename... Args> basic_vec(Args... args) : elems{args...} {}
 
     basic_vec &operator=(const basic_vec &other) {
-        std::copy_n(other.elems, N, elems);
+        for (int i = 0; i < N; i++) {
+            elems[i] = other.elems[i];
+        }
         return *this;
     }
 };

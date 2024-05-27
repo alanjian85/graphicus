@@ -10,14 +10,14 @@ void gpu(uint32_t *mem, uint32_t scrn_size) {
 
     triangle2i trig(vec2i(400, 150), vec2i(200, 450), vec2i(600, 450));
 
-    for (int y = 0; y < scrn_height; y++) {
-        for (int x = 0; x < scrn_width; x++) {
+    for (uint16_t y = 0; y < scrn_height; y++) {
+        for (uint16_t x = 0; x < scrn_width; x++) {
             fb[y * scrn_width + x] = 0xFF202020;
 
-            auto bary_coord = trig.barycentric(vec2i(x, y));
+            const auto bary_coord = trig.barycentric(vec2i(x, y));
             if ((bary_coord.x > 0 && bary_coord.y > 0 && bary_coord.z > 0) ||
                 (bary_coord.x < 0 && bary_coord.y < 0 && bary_coord.z < 0)) {
-                auto area = trig.area();
+                const auto area = trig.area();
                 color_rgba<float> color(static_cast<float>(bary_coord.x) / area,
                                         static_cast<float>(bary_coord.y) / area,
                                         static_cast<float>(bary_coord.z) / area,
