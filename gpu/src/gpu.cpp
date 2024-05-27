@@ -1,5 +1,6 @@
 #include <gpu.hpp>
 
+#include <color.hpp>
 #include <triangle.hpp>
 
 void gpu(uint32_t *mem, uint32_t scrn_size) {
@@ -16,7 +17,12 @@ void gpu(uint32_t *mem, uint32_t scrn_size) {
             auto bary_coord = trig.barycentric(vec2i(x, y));
             if ((bary_coord.x > 0 && bary_coord.y > 0 && bary_coord.z > 0) ||
                 (bary_coord.x < 0 && bary_coord.y < 0 && bary_coord.z < 0)) {
-                fb[y * scrn_width + x] = 0xFF0000FF;
+                auto area = trig.area();
+                color_rgba<float> color(static_cast<float>(bary_coord.x) / area,
+                                        static_cast<float>(bary_coord.y) / area,
+                                        static_cast<float>(bary_coord.z) / area,
+                                        1.0f);
+                fb[y * scrn_width + x] = color.to_integer_color().pack();
             }
         }
     }

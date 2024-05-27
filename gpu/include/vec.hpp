@@ -1,15 +1,39 @@
 #pragma once
 
-template <typename T, int N> struct vec;
+#include <algorithm>
 
-template <typename T> struct vec<T, 2> {
-    T x, y;
+template <typename T, int N> struct basic_vec {
+    T elems[N];
 
-    vec() = default;
+    basic_vec() = default;
 
-    vec(T x, T y) {
-        this->x = x;
-        this->y = y;
+    template <typename... Args> basic_vec(Args... args) : elems{args...} {}
+
+    basic_vec &operator=(const basic_vec &other) {
+        std::copy_n(other.elems, N, elems);
+        return *this;
+    }
+};
+
+template <typename T, int N> struct vec : public basic_vec<T, N> {
+    using basic_vec<T, N>::elems;
+
+    using basic_vec<T, N>::basic_vec;
+
+    vec &operator=(const vec &other) {
+        return static_cast<vec &>(basic_vec<T, N>::operator=(other));
+    }
+};
+
+template <typename T> struct vec<T, 2> : public basic_vec<T, 2> {
+    using basic_vec<T, 2>::elems;
+
+    T &x = elems[0], &y = elems[1];
+
+    using basic_vec<T, 2>::basic_vec;
+
+    vec &operator=(const vec &other) {
+        return static_cast<vec &>(basic_vec<T, 2>::operator=(other));
     }
 };
 
@@ -17,15 +41,15 @@ template <typename T> using vec2 = vec<T, 2>;
 using vec2i = vec2<int>;
 using vec2f = vec2<float>;
 
-template <typename T> struct vec<T, 3> {
-    T x, y, z;
+template <typename T> struct vec<T, 3> : public basic_vec<T, 3> {
+    using basic_vec<T, 3>::elems;
 
-    vec() = default;
+    T &x = elems[0], &y = elems[1], &z = elems[2];
 
-    vec(T x, T y, T z) {
-        this->x = x;
-        this->y = y;
-        this->z = z;
+    using basic_vec<T, 3>::basic_vec;
+
+    vec &operator=(const vec &other) {
+        return static_cast<vec &>(basic_vec<T, 3>::operator=(other));
     }
 };
 
