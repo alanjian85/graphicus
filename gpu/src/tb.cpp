@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstdlib>
+#include <string>
 
 #include <SDL2/SDL.h>
 
@@ -36,8 +37,11 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    bool quit = false;
     uint32_t mem[SCRN_WIDTH * SCRN_HEIGHT];
+
+    bool quit = false;
+    Uint64 start_counter = SDL_GetPerformanceCounter();
+
     while (!quit) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -56,6 +60,14 @@ int main() {
         SDL_RenderCopy(renderer, fb_texture, nullptr, nullptr);
 
         SDL_RenderPresent(renderer);
+
+        Uint64 end_counter = SDL_GetPerformanceCounter();
+        float frame_time = static_cast<float>(end_counter - start_counter) /
+                           SDL_GetPerformanceFrequency();
+        SDL_SetWindowTitle(
+            window,
+            ("Graphicus, FPS: " + std::to_string(1 / frame_time)).c_str());
+        start_counter = end_counter;
     }
 
     SDL_DestroyTexture(fb_texture);
