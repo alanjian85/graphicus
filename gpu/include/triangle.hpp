@@ -5,7 +5,9 @@
 template <typename T, int N> struct basic_triangle {
     vec<T, N> a, b, c;
 
-    basic_triangle(vec<T, N> a, vec<T, N> b, vec<T, N> c) {
+    basic_triangle() = default;
+
+    basic_triangle(const vec<T, N> &a, const vec<T, N> &b, const vec<T, N> &c) {
         this->a = a;
         this->b = b;
         this->c = c;

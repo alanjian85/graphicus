@@ -1,7 +1,5 @@
 #pragma once
 
-#include <algorithm>
-
 template <typename T, int N> struct basic_vec {
     T elems[N];
 

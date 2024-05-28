@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
+#include <vector>
 
 #include <SDL2/SDL.h>
 
@@ -37,6 +38,11 @@ int main() {
         return EXIT_FAILURE;
     }
 
+    const std::vector<float> vertices = {
+        -0.5f, -0.5f, -0.5f, 0.5f,  0.5f, -0.5f,
+        -0.5f, 0.5f,  0.5f,  -0.5f, 0.5f, 0.5f,
+    };
+
     uint32_t mem[SCRN_WIDTH * SCRN_HEIGHT];
 
     bool quit = false;
@@ -52,7 +58,8 @@ int main() {
             }
         }
 
-        gpu(mem, SCRN_WIDTH | SCRN_HEIGHT << 16);
+        gpu(mem, SCRN_WIDTH | SCRN_HEIGHT << 16, vertices.data(),
+            vertices.size());
 
         SDL_RenderClear(renderer);
 
